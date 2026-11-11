@@ -103,6 +103,9 @@ function expenseAdd(newExpense) {
         // Adiciona o item na lista 
         expenseList.append(expenseItem)
 
+        // Limpa o formulario apos adicionar o item na lista.
+        formClear()
+
         // Atualiza os totais 
         updateTotals()
     } catch (error) {
@@ -164,4 +167,29 @@ function updateTotals() {
         alert ("Nao foi possivel atualizar os totais")
 
     }
+}
+
+// Evento de click para remover um item da lista.
+expenseList.addEventListener("click", function (event) {
+    // Verifica se o elemento clicado é o icone de remover.
+    if (event.target.classList.contains("remeve-icon")) {
+        // obtem a li pai do elemento clicado.
+        const item = event.target.closest(".expense")
+
+        // remove o item da lista.
+        item.remove()  
+    }    
+
+    // atualiza os totais apos remover o item.
+    updateTotals()
+})    
+
+function formClear() {
+    // Limpa os inputs.
+    amount.value = ""
+    expense.value = ""
+    category.value = ""
+
+    // coloca o foco no input de amount.
+    expense.focus()
 }
