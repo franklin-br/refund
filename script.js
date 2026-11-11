@@ -6,7 +6,9 @@ const category = document.getElementById("category");
 
 // Seleciona os elementos da lista.
 const expenseList = document.querySelector("ul") 
+const expensesTotal = document.querySelector("aside header h2")
 const expenseQuantity = document.querySelector("aside header p span")
+
 
 // captura o evento de input para formatar o valor.
     amount.oninput = () => {
@@ -117,9 +119,46 @@ function updateTotals() {
         console.log(items)
         // Atualizar a quantiddade de items da lista
         expenseQuantity.textContent = `${items.length} ${items.length > 1 ? "despesas" : "despesa"
-            
+
         }`
+
+        // Variavel para Incrementar o total.
+        let total = 0
+
+        // Percorer cada item (li) da lista (ul)
+        for (let item = 0; item < items.length; item++) {
+            const itemAmount = items[item].querySelector(".expense-amount")
+
+            let value = itemAmount.textContent.replace(/[^\d,]/g, "").replace(",",".")
         
+        
+         // converte o valor para float
+         value = parseFloat(value)
+
+         // verifica se e um numero valido.
+          if (isNaN(value)) {
+            return alert(
+                "Nao foi possivel calcular o total. O Valor nao parecer ser um numero."
+
+            )
+          }
+           // Incrementar o valor total
+           total += Number(value)   
+        }
+        
+
+        // Cria a span. para exibir o total de despesas formatado com Euro.
+        const symbolEUR = document.createElement("small")
+        symbolEUR.textContent = "€"
+
+        // formata o valor e remove o EUR que será exibido pela small com stilo customizado.
+        total = formatCurrencyEUR(total).toUpperCase().replace("€", "")
+
+        // Limpa o conteudo do elemento de total de despesas.
+        expensesTotal.innerHTML = ""
+
+        // add the symbol and the total value to the expensesTotal element.
+        expensesTotal.append(total, symbolEUR)
     } catch (error) {
         console.log(error)
         alert ("Nao foi possivel atualizar os totais")
